@@ -6,7 +6,6 @@
 package TallerProxy;
 
 import javax.swing.JOptionPane;
-import patronProxyEjemplo.*;
 
 /**
  *

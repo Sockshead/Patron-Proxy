@@ -5,8 +5,6 @@
  */
 package TallerProxy;
 
-import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,7 +13,9 @@ import javax.swing.JOptionPane;
  */
 public class TallerProxy {
 
-    private ArrayList<User> usuarios;
+    Proxy prox;
+    String usuario;
+    String password;
 
     /**
      * @param args the command line arguments
@@ -27,7 +27,7 @@ public class TallerProxy {
     }
 
     public TallerProxy() {
-        this.usuarios = new ArrayList();
+        prox=new Proxy();
         this.menu();
     }
 
@@ -42,17 +42,22 @@ public class TallerProxy {
             opcion = x.charAt(0);
             switch (opcion) {
                 case '1':
+                    usuario = JOptionPane.showInputDialog("Ingrese su numero de cedula");
+                    password = JOptionPane.showInputDialog("Ingrese su contraseña");
                     this.CrearU();
                     break;
                 case '2':
-                    if (!this.usuarios.isEmpty()) {
-                        this.rFolder();
+                    if (!prox.getUsuarios().isEmpty()) {
+                        usuario = JOptionPane.showInputDialog("Ingrese su numero de cedula");
+                        password = JOptionPane.showInputDialog("Ingrese su contraseña");
+                        prox.validarUs(usuario, password);
                     } else {
                         JOptionPane.showMessageDialog(null, "No existe ningun usuario en el sistema", "Error", 0);
                     }
                     break;
                 case '0':
                     JOptionPane.showMessageDialog(null, "CHAO PESCAO..!", "Despedida", 2);
+                    System.exit(0);
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "ESE CASO NO EXISTE..!", "Error", 0);
@@ -61,29 +66,7 @@ public class TallerProxy {
         } while (opcion != '0');
     }
 
-    private void rFolder() {
-        String usuario = JOptionPane.showInputDialog("Ingrese su numero de cedula");
-        String password = JOptionPane.showInputDialog("Ingrese su contraseña");
-        User us;
-        boolean encontrado = false;
-
-        for (int i = 0; i < usuarios.size(); i++) {
-            us = usuarios.get(i);
-            if (us.getUserName().equalsIgnoreCase(usuario) && us.getPassword().equalsIgnoreCase(password)) {
-                encontrado = true;
-                Proxy proxy = new Proxy(us);
-                proxy.performOperations();
-            }
-        }
-        if (!encontrado) {
-            System.out.println("Usuario no encontrado");
-        }
-    }
-
     private void CrearU() {
-        String usuario = JOptionPane.showInputDialog("Ingrese su numero de cedula");
-        String password = JOptionPane.showInputDialog("Ingrese su contraseña");
-
         char opcion;
         do {
             String x = JOptionPane.showInputDialog("=======SELECCIONE EL TIPO DE USUARIO=========\n"
@@ -96,21 +79,24 @@ public class TallerProxy {
             switch (opcion) {
                 case '1':
                     User admin = new User(usuario, password, User.Tipo.ADMIN);
-                    usuarios.add(admin);
-                    System.out.println("Administrador creado exitosamente");
-                    this.menu();
+                    if (prox.addUs(admin)) {
+                        System.out.println("Administrador creado exitosamente");
+                        this.menu();
+                    }
                     break;
                 case '2':
                     User conductor = new User(usuario, password, User.Tipo.CONDUCTOR);
-                    usuarios.add(conductor);
-                    System.out.println("Conductor creado exitosamente");
-                    this.menu();
+                    if (prox.addUs(conductor)) {
+                        System.out.println("Conductor creado exitosamente");
+                        this.menu();
+                    }
                     break;
                 case '3':
                     User pasajero = new User(usuario, password, User.Tipo.PASAJERO);
-                    usuarios.add(pasajero);
-                    System.out.println("Pasajero creado exitosamente");
-                    this.menu();
+                    if (prox.addUs(pasajero)) {
+                        System.out.println("Pasajero creado exitosamente");
+                        this.menu();
+                    }
                     break;
                 case '0':
                     break;

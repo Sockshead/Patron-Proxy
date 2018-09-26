@@ -5,8 +5,6 @@
  */
 package TallerProxy;
 
-import patronProxyEjemplo.*;
-
 /**
  *
  * @author JUan Camilo Posada
