@@ -27,8 +27,8 @@ public class TallerProxy {
     }
 
     public TallerProxy() {
-        prox=new Proxy();
-        this.menu();
+        prox=Proxy.rConstructora();
+        this.menu();    
     }
 
     private void menu() {

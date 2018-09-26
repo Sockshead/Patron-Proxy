@@ -13,7 +13,9 @@ import javax.swing.JOptionPane;
  * @author JUan Camilo Posada
  */
 class Proxy implements IMenu {
-
+    
+    
+    private static Proxy instanciaUnica = null;
     private ArrayList<User> usuarios;
     Menu menu;
     User user;
@@ -21,7 +23,12 @@ class Proxy implements IMenu {
     public Proxy() {
         usuarios = new ArrayList();
     }
-
+    public static Proxy rConstructora(){
+        if(instanciaUnica==null){
+            instanciaUnica=new Proxy();
+        }
+        return instanciaUnica;
+    }
     public void performOperations() {
         if (user.getTipo().equals(User.Tipo.ADMIN)) {
             menu = new Menu();
